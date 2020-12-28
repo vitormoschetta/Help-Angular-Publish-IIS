@@ -44,7 +44,7 @@ Veja o arquivo **index.html**:
 <head>
   <meta charset="utf-8">
   <title>AngularApp</title>
-  **<base href="/ePortal/">**
+  <base href="/ePortal/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500&display=swap" rel="stylesheet">
@@ -56,9 +56,38 @@ Veja o arquivo **index.html**:
 </html>
 ```
 
+Perceba a existência da tag **base** referênciando o diretório **/ePortal/**. 
+
 
 
 ## Testar aplicação
 
 Nessa altura a aplicação já pode ser acessada. Porém, ao pressionar a tecla **F5** a aplicação não identifica as rotas filhas. 
+
+Para corrigir, adicione o seguinte arquivo na raíz da aplicação, junto ao **index.html**:
+```
+<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+<system.webServer>
+  <rewrite>
+    <rules>
+      <rule name="Angular Routes" stopProcessing="true">
+        <match url=".*" />
+        <conditions logicalGrouping="MatchAll">
+          <add input="{REQUEST_FILENAME}" matchType="IsFile" negate="true" />
+          <add input="{REQUEST_FILENAME}" matchType="IsDirectory" negate="true" />
+        </conditions>
+        <action type="Rewrite" url="/ePortal/" />
+      </rule>
+    </rules>
+  </rewrite>
+</system.webServer>
+
+</configuration>
+```
+
+O arquivo acima deve conter o seguinte nome:  
+```
+web.config
+```
 
